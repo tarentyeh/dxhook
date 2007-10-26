@@ -1,5 +1,24 @@
 #pragma once
 #include "stdafx.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+using std::ofstream;
+using std::ios;
+using std::string;
+
+#define LOGEVERYTHINGALWAYS true
+#define LOGEVERYTHING false
+#define DXLOG(text)	if (LOGEVERYTHING){ \
+					ofstream log;\
+					log.open("D:\\dxlog.txt", ios::app);\
+					log << (text);\
+					log.close(); }
+#define DXLOGALWAYS(text)	if (LOGEVERYTHINGALWAYS){\
+							ofstream log;\
+							log.open("D:\\dxlog.txt", ios::app);\
+							log << (text);\
+							log.close(); }
 
 class Direct3DDevice9Wrapper : public IDirect3DDevice9
 {
@@ -134,8 +153,8 @@ public:
 	STDMETHOD(CreateQuery)(THIS_ D3DQUERYTYPE Type,IDirect3DQuery9** ppQuery);
 	//---------------------------------------------------------------------------------------------
 
-	IDirect3DDevice9* Direct3DDevice9;
-	IDirect3D9* Direct3D9;
+	static IDirect3DDevice9* Direct3DDevice9;
+	static IDirect3D9* Direct3D9;
 
 	UINT m_Stride;
 };
