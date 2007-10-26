@@ -15,6 +15,8 @@ using std::cout;
 #pragma comment(lib,"Detours\\detours.lib")
 #include "Detours\detours.h"
 
+#define GAME2
+
 int main()
 {
 	////////////////////////////////////
@@ -24,15 +26,25 @@ int main()
 	PROCESS_INFORMATION pi = {0};
 
 	//	Run the application with our dll
-	/*BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\World of Warcraft\\wow.exe", NULL, 0, 0, TRUE,
+#ifdef GAME1
+	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\World of Warcraft\\wow.exe", NULL, 0, 0, TRUE,
 		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
-		L"D:\\Games\\World of Warcraft",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );*/
-
-	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Loki\\Loki.exe", NULL, 0, 0, TRUE,
+		L"D:\\Games\\World of Warcraft",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
+#endif
+#ifdef GAME2
+	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Downloads\\DC\\Heroes of Might and Magic V\\bin\\H5_Game.exe", NULL, 0, 0, TRUE,
 		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
-		L"D:\\Games\\Loki",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
+		L"D:\\Downloads\\DC\\Heroes of Might and Magic V\\bin",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
+#endif
 
-	printf("Attached is %s.", (bResult)?"successful":"unsuccessful");
-	getch();
-	return bResult;
+#ifdef GAME3
+	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Tomb Raider - Anniversary\\tra.exe", NULL, 0, 0, TRUE,
+		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
+		L"D:\\Games\\Tomb Raider - Anniversary",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
+#endif
+
+
+	printf("Attached is %s.\n", (bResult)?"successful":"unsuccessful");
+	if (!bResult)
+		getch();
 }
