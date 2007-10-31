@@ -292,6 +292,7 @@ HRESULT Direct3DDevice9Wrapper::Clear(DWORD Count,CONST D3DRECT* pRects,DWORD Fl
 HRESULT Direct3DDevice9Wrapper::SetTransform(D3DTRANSFORMSTATETYPE State,CONST D3DMATRIX* pMatrix)
 {
 	DXLOG("D3D9Wrapper_Device: SetTransform\n");
+	return D3D_OK;
 	return Direct3DDevice9->SetTransform(State, pMatrix);
 }
 
