@@ -2,6 +2,8 @@
 #include "id3d9wrapper_device.h"
 #include "Direct3DDevice9WrapperExtended.h"
 #include "Window.h"
+#include <set>
+using std::set;
 
 //-----------------------------------------------------------------------------------
 //	class: Direct3DDevice9WrapperExtended
@@ -43,4 +45,6 @@ private:
 
 	static int m_iSelected;
 	static int m_iCurrent;
+	static set<int> *m_setSelected;
+	static bool m_bLogCycle;
 };

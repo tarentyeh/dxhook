@@ -6,6 +6,7 @@ IDirect3D9* Direct3D9Wrapper::Direct3D9 = NULL;
 Direct3D9Wrapper::Direct3D9Wrapper(LPDIRECT3D9 pDirect3D)
 {   
 	Direct3D9 = pDirect3D;
+	m_bIsLogCycle = false;
 }
 
 Direct3D9Wrapper::~Direct3D9Wrapper() {}
