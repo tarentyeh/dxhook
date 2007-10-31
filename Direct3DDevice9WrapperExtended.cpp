@@ -35,6 +35,7 @@ HRESULT Direct3DDevice9WrapperExtended::Present(CONST RECT* pSourceRect,CONST RE
 {
 	DXLOG("Direct3DDevice9WrapperExtended: Present\n");
 
+
 	if (m_bIsLogCycle){
 		m_bIsLogCycle = false;
 	}
@@ -63,9 +64,9 @@ HRESULT Direct3DDevice9WrapperExtended::SetRenderState(D3DRENDERSTATETYPE State,
 		}
 	}
 
-	if (State == D3DRS_ALPHAREF){
+	/*if (State == D3DRS_ALPHAREF){
 		return Direct3DDevice9->SetRenderState(D3DRS_ALPHAREF, 0);
-	}
+	}*/
 
 	return Direct3DDevice9->SetRenderState(State, Value);
 }
@@ -119,6 +120,8 @@ HRESULT Direct3DDevice9WrapperExtended::BeginScene()
 {
 	DXLOG("Direct3DDevice9WrapperExtended: BeginScene\n");
 	m_iCurrent = 0;
+
+
 	return Direct3DDevice9->BeginScene();
 }
 
@@ -182,4 +185,28 @@ HRESULT Direct3DDevice9WrapperExtended::DrawIndexedPrimitiveUP( D3DPRIMITIVETYPE
 	}
 	m_iCurrent++;
 	return Direct3DDevice9->DrawIndexedPrimitiveUP( PrimitiveType, MinVertexIndex, NumVertices, PrimitiveCount, pIndexData, IndexDataFormat, pVertexStreamZeroData, VertexStreamZeroStride); 
+}
+
+HRESULT Direct3DDevice9WrapperExtended::SetVertexShader( IDirect3DVertexShader9* pShader)
+{
+	DXLOG("Direct3DDevice9WrapperExtended: SetVertexShader\n");
+	return Direct3DDevice9->SetVertexShader(pShader);
+}
+
+HRESULT Direct3DDevice9WrapperExtended::SetVertexShaderConstantF( UINT StartRegister,CONST float* pConstantData,UINT Vector4fCount)
+{
+	DXLOG("Direct3DDevice9WrapperExtended: SetVertexShaderConstantF\n");
+	return Direct3DDevice9->SetVertexShaderConstantF(  StartRegister, pConstantData, Vector4fCount);
+}
+
+HRESULT Direct3DDevice9WrapperExtended::SetPixelShader( IDirect3DPixelShader9* pShader)
+{
+	DXLOG("Direct3DDevice9WrapperExtended: SetPixelShader\n");
+	return Direct3DDevice9->SetPixelShader(  pShader);
+}
+
+HRESULT Direct3DDevice9WrapperExtended::SetPixelShaderConstantF( UINT StartRegister,CONST float* pConstantData,UINT Vector4fCount)
+{
+	DXLOG("Direct3DDevice9WrapperExtended: SetPixelShaderConstantF\n");
+	return Direct3DDevice9->SetPixelShaderConstantF(  StartRegister, pConstantData, Vector4fCount); 
 }
