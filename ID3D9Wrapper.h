@@ -32,5 +32,6 @@ public:
 	STDMETHOD(CreateDevice)(THIS_ UINT Adapter,D3DDEVTYPE DeviceType,HWND hFocusWindow,DWORD BehaviorFlags,D3DPRESENT_PARAMETERS* pPresentationParameters,IDirect3DDevice9** ppReturnedDeviceInterface);
 	//---------------------------------------------------------------------------------------------
 
+	bool m_bIsLogCycle;
 	static IDirect3D9* Direct3D9;
 };

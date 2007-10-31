@@ -14,7 +14,7 @@ using std::cout;
 
 #pragma comment(lib,"Detours\\detours.lib")
 #include "Detours\detours.h"
-
+	
 #define GAME2
 
 int main()
@@ -32,15 +32,21 @@ int main()
 		L"D:\\Games\\World of Warcraft",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
 #endif
 #ifdef GAME2
-	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Downloads\\DC\\Heroes of Might and Magic V\\bin\\H5_Game.exe", NULL, 0, 0, TRUE,
+	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Heroes of Might and Magic V\\bin\\H5_Game.exe", NULL, 0, 0, TRUE,
 		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
-		L"D:\\Downloads\\DC\\Heroes of Might and Magic V\\bin",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
+		L"D:\\Games\\Heroes of Might and Magic V\\bin",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
 #endif
 
 #ifdef GAME3
 	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Tomb Raider - Anniversary\\tra.exe", NULL, 0, 0, TRUE,
 		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
 		L"D:\\Games\\Tomb Raider - Anniversary",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
+#endif
+
+#ifdef GAME4
+	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Heroes of Might and Magic V - Tribes of the East\\bin\\H5_Game.exe", NULL, 0, 0, TRUE,
+		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
+		L"D:\\Games\\Heroes of Might and Magic V - Tribes of the East\\bin",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
 #endif
 
 

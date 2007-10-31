@@ -9,12 +9,12 @@ using std::string;
 
 #define LOGEVERYTHINGALWAYS true
 #define LOGEVERYTHING false
-#define DXLOG(text)	if (LOGEVERYTHING){ \
+#define DXLOG(text)	if (LOGEVERYTHING || m_bIsLogCycle){ \
 					ofstream log;\
 					log.open("D:\\dxlog.txt", ios::app);\
 					log << (text);\
 					log.close(); }
-#define DXLOGALWAYS(text)	if (LOGEVERYTHINGALWAYS){\
+#define DXLOGALWAYS(text)	if (LOGEVERYTHINGALWAYS || m_bIsLogCycle){\
 							ofstream log;\
 							log.open("D:\\dxlog.txt", ios::app);\
 							log << (text);\
@@ -157,4 +157,5 @@ public:
 	static IDirect3D9* Direct3D9;
 
 	UINT m_Stride;
+	bool m_bIsLogCycle;
 };

@@ -7,6 +7,7 @@ Direct3DDevice9Wrapper::Direct3DDevice9Wrapper(IDirect3DDevice9 *pDirect3DDevice
 {
 	Direct3DDevice9 = pDirect3DDevice9;
 	Direct3D9 = pDirect3D9;
+	m_bIsLogCycle = false;
 }
 
 Direct3DDevice9Wrapper::~Direct3DDevice9Wrapper(){}
