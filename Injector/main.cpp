@@ -15,7 +15,7 @@ using std::cout;
 #pragma comment(lib,"Detours\\detours.lib")
 #include "Detours\detours.h"
 	
-#define GAME2
+#define GAME3
 
 int main()
 {
@@ -27,9 +27,9 @@ int main()
 
 	//	Run the application with our dll
 #ifdef GAME1
-	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\World of Warcraft\\wow.exe", NULL, 0, 0, TRUE,
+	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Tom Clancy's Splinter Cell Double Agent\\SCDALauncher.exe", NULL, 0, 0, TRUE,
 		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
-		L"D:\\Games\\World of Warcraft",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
+		L"D:\\Games\\Tom Clancy's Splinter Cell Double Agent",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
 #endif
 #ifdef GAME2
 	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Heroes of Might and Magic V\\bin\\H5_Game.exe", NULL, 0, 0, TRUE,
@@ -42,13 +42,6 @@ int main()
 		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
 		L"D:\\Games\\Tomb Raider - Anniversary",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
 #endif
-
-#ifdef GAME4
-	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Heroes of Might and Magic V - Tribes of the East\\bin\\H5_Game.exe", NULL, 0, 0, TRUE,
-		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
-		L"D:\\Games\\Heroes of Might and Magic V - Tribes of the East\\bin",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
-#endif
-
 
 	printf("Attached is %s.\n", (bResult)?"successful":"unsuccessful");
 	if (!bResult)
