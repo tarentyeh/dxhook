@@ -109,7 +109,7 @@ HWND WINAPI Mine_CreateWindowExA(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpW
 //	*** CreateWindowExW ***********************************************************
 HWND WINAPI Mine_CreateWindowExW(DWORD dwExStyle, LPCWSTR lpClassName, LPCWSTR lpWindowName, DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance, LPVOID lpParam)
 {
-	//if (nWidth > 280 && nWidth < 100000 && !GameHwnd){	//	This might be our game window
+	if (nWidth > 280 && nWidth < 100000 && !GameHwnd){	//	This might be our game window
 
 		//	************************	Game window settings override		***********************
 		StyleSettings(dwExStyle, dwStyle,nWidth, nHeight);
@@ -126,7 +126,7 @@ HWND WINAPI Mine_CreateWindowExW(DWORD dwExStyle, LPCWSTR lpClassName, LPCWSTR l
 
 		GameHwnd = Real_CreateWindowExW(dwExStyle, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
 		return GameHwnd;
-	//}
+	}
 
 	return Real_CreateWindowExW(dwExStyle, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
 }
@@ -208,8 +208,6 @@ void HookAPI()
 	DetourFunctionWithTrampoline( (PBYTE)Real_CreateWindowExA,	(PBYTE)Mine_CreateWindowExA );
 	DetourFunctionWithTrampoline( (PBYTE)Real_CreateWindowExW,	(PBYTE)Mine_CreateWindowExW );
 	DetourFunctionWithTrampoline( (PBYTE)Real_DirectInput8Create,	(PBYTE)Mine_DirectInput8Create);
-	//DetourFunctionWithTrampoline( (PBYTE)Real_RegisterClassExW, (PBYTE)Mine_RegisterClassExW);
-	//DetourFunctionWithTrampoline( (PBYTE)Real_RegisterClassExA, (PBYTE)Mine_RegisterClassExA);
 }
 
 void UnhookAPI()
@@ -219,8 +217,6 @@ void UnhookAPI()
 	DetourRemove( (PBYTE)Real_CreateWindowExA,	(PBYTE)Mine_CreateWindowExA );
 	DetourRemove( (PBYTE)Real_CreateWindowExW,	(PBYTE)Mine_CreateWindowExW );
 	DetourRemove( (PBYTE)Real_DirectInput8Create,	(PBYTE)Mine_DirectInput8Create);
-	//DetourRemove( (PBYTE)Real_RegisterClassExW, (PBYTE)Mine_RegisterClassExW);
-	//DetourRemove( (PBYTE)Real_RegisterClassExA, (PBYTE)Mine_RegisterClassExA);
 }
 
 //	----------------------------------------------------------------------
