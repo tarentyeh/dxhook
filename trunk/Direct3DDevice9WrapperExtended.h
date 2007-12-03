@@ -26,19 +26,14 @@ public:
 	STDMETHOD(Present)(THIS_ CONST RECT* pSourceRect,CONST RECT* pDestRect,HWND hDestWindowOverride,CONST RGNDATA* pDirtyRegion);
 	STDMETHOD(SetRenderState)(THIS_ D3DRENDERSTATETYPE State,DWORD Value);
 	STDMETHOD(BeginScene)(THIS);
-	STDMETHOD(DrawPrimitive)(THIS_ D3DPRIMITIVETYPE PrimitiveType,UINT StartVertex,UINT PrimitiveCount);
 	STDMETHOD(DrawIndexedPrimitive)(THIS_ D3DPRIMITIVETYPE,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);
-	STDMETHOD(DrawPrimitiveUP)(THIS_ D3DPRIMITIVETYPE PrimitiveType,UINT PrimitiveCount,CONST void* pVertexStreamZeroData,UINT VertexStreamZeroStride);
-	STDMETHOD(DrawIndexedPrimitiveUP)(THIS_ D3DPRIMITIVETYPE PrimitiveType,UINT MinVertexIndex,UINT NumVertices,UINT PrimitiveCount,CONST void* pIndexData,D3DFORMAT IndexDataFormat,CONST void* pVertexStreamZeroData,UINT VertexStreamZeroStride);
-
-	STDMETHOD(SetVertexShader)(THIS_ IDirect3DVertexShader9* pShader);
-	STDMETHOD(SetVertexShaderConstantF)(THIS_ UINT StartRegister,CONST float* pConstantData,UINT Vector4fCount);
-	STDMETHOD(SetPixelShader)(THIS_ IDirect3DPixelShader9* pShader);
-	STDMETHOD(SetPixelShaderConstantF)(THIS_ UINT StartRegister,CONST float* pConstantData,UINT Vector4fCount);
 
 	static LRESULT CALLBACK Mine_WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 
 private:
+
+	void StartCycle();
+	void Lock(bool &action, bool &actionCycle);
 
 	//***********************************************************************
 	//	Members section
@@ -51,5 +46,12 @@ private:
 	static int m_iSelected;
 	static int m_iCurrent;
 	static set<int> *m_setSelected;
+	
 	static bool m_bLogCycle;
+
+	static bool m_bUpdateSelected;
+	static bool m_bIsUpdateSelectedCycle;
+
+	static bool m_bPickedChanged;
+	static bool m_bIsPickedChangedCycle;
 };

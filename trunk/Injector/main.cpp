@@ -17,6 +17,16 @@ using std::cout;
 	
 #define GAME3
 
+//------------------------------------------------
+//	KEYS:
+//---------
+//	Logging -					INSERT
+//	Reset selection -			DELETE
+//	Switch wireframe mode -		F1
+//	Select next -				F2
+//	Select previous -			F3
+//	Select/Deselect current -	F4
+
 int main()
 {
 	////////////////////////////////////

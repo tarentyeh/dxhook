@@ -9,12 +9,17 @@ using std::string;
 
 #define LOGEVERYTHINGALWAYS true
 #define LOGEVERYTHING false
-#define DXLOG(text)	if (LOGEVERYTHING || m_bIsLogCycle){ \
-					ofstream log;\
-					log.open("D:\\dxlog.txt", ios::app);\
-					log << (text);\
-					log.close(); }
-#define DXLOGALWAYS(text)	if (LOGEVERYTHINGALWAYS || m_bIsLogCycle){\
+#define DXLOG(text)	if (LOGEVERYTHING){ \
+						ofstream log;\
+						log.open("D:\\dxlog.txt", ios::app);\
+						log << (text);\
+						log.close(); }
+#define DXLOGCYCLE(text)	if (LOGEVERYTHING || m_bIsLogCycle){ \
+								ofstream log;\
+								log.open("D:\\dxlog.txt", ios::app);\
+								log << (text);\
+								log.close(); }
+#define DXLOGALWAYS(text)	if (LOGEVERYTHINGALWAYS){\
 							ofstream log;\
 							log.open("D:\\dxlog.txt", ios::app);\
 							log << (text);\
