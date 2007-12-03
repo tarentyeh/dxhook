@@ -198,6 +198,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\KeyboardCallback.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 			</File>
