@@ -12,8 +12,8 @@
 #include <string>
 using std::cout;
 
-#pragma comment(lib,"Detours\\detours.lib")
-#include "Detours\detours.h"
+#pragma comment(lib,"..\\Detours\\detours.lib")
+#include "..\Detours\detours.h"
 	
 #define GAME3
 
@@ -39,18 +39,18 @@ int main()
 #ifdef GAME1
 	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Tom Clancy's Splinter Cell Double Agent\\SCDALauncher.exe", NULL, 0, 0, TRUE,
 		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
-		L"D:\\Games\\Tom Clancy's Splinter Cell Double Agent",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
+		L"D:\\Games\\Tom Clancy's Splinter Cell Double Agent",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\BASA\\Release\\dxhook.dll" , 0 );
 #endif
 #ifdef GAME2
 	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Heroes of Might and Magic V\\bin\\H5_Game.exe", NULL, 0, 0, TRUE,
 		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
-		L"D:\\Games\\Heroes of Might and Magic V\\bin",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
+		L"D:\\Games\\Heroes of Might and Magic V\\bin",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\BASA\\Release\\dxhook.dll" , 0 );
 #endif
 
 #ifdef GAME3
 	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Tomb Raider - Anniversary\\tra.exe", NULL, 0, 0, TRUE,
 		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
-		L"D:\\Games\\Tomb Raider - Anniversary",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\Wrapper\\DXWrapper\\Release\\dxhook.dll" , 0 );
+		L"D:\\Games\\Tomb Raider - Anniversary",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\BASA\\Release\\dxhook.dll" , 0 );
 #endif
 
 	printf("Attached is %s.\n", (bResult)?"successful":"unsuccessful");

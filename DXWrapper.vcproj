@@ -117,6 +117,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="&quot;c:\Program Files\Microsoft Research\Detours Express 2.1\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;DXWRAPPER_EXPORTS;"
 				RuntimeLibrary="2"
 				UsePrecompiledHeader="0"
@@ -198,6 +199,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\IndexedPrimitive.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\KeyboardCallback.cpp"
 				>
 			</File>
@@ -225,6 +230,10 @@
 			</File>
 			<File
 				RelativePath=".\ID3D9Wrapper_Device.h"
+				>
+			</File>
+			<File
+				RelativePath=".\IndexedPrimitive.h"
 				>
 			</File>
 			<File

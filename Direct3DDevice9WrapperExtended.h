@@ -4,6 +4,7 @@
 #include "Window.h"
 #include <set>
 using std::set;
+#include "IndexedPrimitive.h"
 
 //-----------------------------------------------------------------------------------
 //	class: Direct3DDevice9WrapperExtended
@@ -45,7 +46,7 @@ private:
 
 	static int m_iSelected;
 	static int m_iCurrent;
-	static set<int> *m_setSelected;
+	static set<IndexedPrimitive> *m_setSelected;
 	
 	static bool m_bLogCycle;
 
@@ -54,4 +55,8 @@ private:
 
 	static bool m_bPickedChanged;
 	static bool m_bIsPickedChangedCycle;
+	static bool m_bHideSelected;
+
+	IndexedPrimitive m_ipCurrentIndexedPrimitive;
+
 };

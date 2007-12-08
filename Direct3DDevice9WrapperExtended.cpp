@@ -3,7 +3,7 @@
 DWORD Direct3DDevice9WrapperExtended::m_dwWireframe = D3DFILL_SOLID;
 HWND Direct3DDevice9WrapperExtended::m_GameHwnd = NULL;
 WNDPROC Direct3DDevice9WrapperExtended::m_lpOldWndProc = NULL;
-set<int> *Direct3DDevice9WrapperExtended::m_setSelected = NULL;
+set<IndexedPrimitive> *Direct3DDevice9WrapperExtended::m_setSelected = NULL;
 int Direct3DDevice9WrapperExtended::m_iSelected = 0;
 int Direct3DDevice9WrapperExtended::m_iCurrent = 0;
 bool Direct3DDevice9WrapperExtended::m_bLogCycle = false;
@@ -11,11 +11,12 @@ bool Direct3DDevice9WrapperExtended::m_bIsUpdateSelectedCycle = false;
 bool Direct3DDevice9WrapperExtended::m_bUpdateSelected = false;
 bool Direct3DDevice9WrapperExtended::m_bPickedChanged = false;
 bool Direct3DDevice9WrapperExtended::m_bIsPickedChangedCycle = false;
+bool Direct3DDevice9WrapperExtended::m_bHideSelected = false;
 
 Direct3DDevice9WrapperExtended::Direct3DDevice9WrapperExtended(IDirect3DDevice9* pDirect3DDevice9, IDirect3D9* pDirect3D9, D3DPRESENT_PARAMETERS *pPresentationParameters, HWND hFocusWindow):
 Direct3DDevice9Wrapper(pDirect3DDevice9, pDirect3D9, pPresentationParameters)
 {
-	m_setSelected = new set<int>();
+	m_setSelected = new set<IndexedPrimitive>();
 	m_GameHwnd = hFocusWindow;
 	m_bIsLogCycle = false;
 
@@ -62,13 +63,31 @@ HRESULT Direct3DDevice9WrapperExtended::DrawIndexedPrimitive( D3DPRIMITIVETYPE P
 	char tmp[250];
 	sprintf(tmp, "Direct3DDevice9WrapperExtended: DrawIndexedPrimitive. PrimitiveType = %u, BaseVertexIndex = %d, MinVertexIndex = %u, NumVertices = %u, startIndex = %u, primCount = %u\n", PrimitiveType, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
 	DXLOGCYCLE(tmp);
-	if (m_iCurrent == m_iSelected || m_setSelected->find(m_iCurrent) != m_setSelected->end()){
+
+	bool inSet = m_setSelected->find(IndexedPrimitive(BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount)) != m_setSelected->end();
+	bool isCurrent = m_iSelected == m_iCurrent;
+
+	if ((m_bIsPickedChangedCycle || m_bIsUpdateSelectedCycle) && isCurrent){
+		m_ipCurrentIndexedPrimitive.Set(BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount);
+	}
+
+	if (m_bIsPickedChangedCycle && isCurrent){
+		if (inSet)
+			m_setSelected->erase(m_ipCurrentIndexedPrimitive);
+		else
+			m_setSelected->insert(m_ipCurrentIndexedPrimitive);
+
+		inSet = !inSet;
+	}
+	
+	if ((!m_bHideSelected && isCurrent) || inSet){
 		Direct3DDevice9->SetRenderState(D3DRS_FILLMODE, D3DFILL_SOLID);
 		HRESULT res = Direct3DDevice9->DrawIndexedPrimitive( PrimitiveType, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount); 
 		Direct3DDevice9->SetRenderState(D3DRS_FILLMODE, m_dwWireframe);
 		m_iCurrent++;
 		return res;
 	}
+
 	m_iCurrent++;
 
 	if(LOWORD(GetKeyState(VK_CAPITAL)) & 1) // Caps is on
