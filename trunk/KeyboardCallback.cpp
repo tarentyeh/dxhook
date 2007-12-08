@@ -43,8 +43,7 @@ LRESULT CALLBACK Direct3DDevice9WrapperExtended::Mine_WndProc(HWND hWnd, UINT uM
 			break;
 
 		case VK_F11:
-			SendMessage(NULL, WM_KEYDOWN, VK_DOWN, 0);
-			PostMessage(NULL, WM_KEYDOWN, VK_DOWN, 0);
+			m_bHideSelected = !m_bHideSelected;
 			break;
 		}
 	}

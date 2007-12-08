@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dxhook", "DXWrapper.vcproj"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Injector", "Injector\Injector.vcproj", "{67A18468-28BC-4FC3-9B04-E024C2F4310D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Detours", "Detours\Detours.vcproj", "{E657DE41-1826-455C-98F1-17B2920A510D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{67A18468-28BC-4FC3-9B04-E024C2F4310D}.Debug|Win32.Build.0 = Debug|Win32
 		{67A18468-28BC-4FC3-9B04-E024C2F4310D}.Release|Win32.ActiveCfg = Release|Win32
 		{67A18468-28BC-4FC3-9B04-E024C2F4310D}.Release|Win32.Build.0 = Release|Win32
+		{E657DE41-1826-455C-98F1-17B2920A510D}.Debug|Win32.ActiveCfg = Debug|Win32
+		{E657DE41-1826-455C-98F1-17B2920A510D}.Debug|Win32.Build.0 = Debug|Win32
+		{E657DE41-1826-455C-98F1-17B2920A510D}.Release|Win32.ActiveCfg = Release|Win32
+		{E657DE41-1826-455C-98F1-17B2920A510D}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
