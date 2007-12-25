@@ -27,6 +27,7 @@ public:
 	STDMETHOD(Present)(THIS_ CONST RECT* pSourceRect,CONST RECT* pDestRect,HWND hDestWindowOverride,CONST RGNDATA* pDirtyRegion);
 	STDMETHOD(SetRenderState)(THIS_ D3DRENDERSTATETYPE State,DWORD Value);
 	STDMETHOD(BeginScene)(THIS);
+	STDMETHOD(EndScene)(THIS);
 	STDMETHOD(DrawIndexedPrimitive)(THIS_ D3DPRIMITIVETYPE,INT BaseVertexIndex,UINT MinVertexIndex,UINT NumVertices,UINT startIndex,UINT primCount);
 
 	static LRESULT CALLBACK Mine_WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
@@ -56,6 +57,13 @@ private:
 	static bool m_bPickedChanged;
 	static bool m_bIsPickedChangedCycle;
 	static bool m_bHideSelected;
+	static bool m_bCaptureScreen;
+	static bool m_bIsCaptureCycle;
+
+	bool m_bIsTrackingCaptureCycle;
+
+	IDirect3DPixelShader9 *m_psWhite;
+	IDirect3DPixelShader9 *m_psTmp;
 
 	IndexedPrimitive m_ipCurrentIndexedPrimitive;
 

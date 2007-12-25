@@ -6,6 +6,7 @@ LRESULT CALLBACK Direct3DDevice9WrapperExtended::Mine_WndProc(HWND hWnd, UINT uM
 		switch (wParam)
 		{
 		case VK_F1:
+			DXLOGALWAYS("WireFrame");
 			m_dwWireframe = (m_dwWireframe == D3DFILL_SOLID)? D3DFILL_WIREFRAME : D3DFILL_SOLID;
 			if (Direct3DDevice9){
 				Direct3DDevice9->SetRenderState(D3DRS_FILLMODE, m_dwWireframe);
@@ -26,20 +27,21 @@ LRESULT CALLBACK Direct3DDevice9WrapperExtended::Mine_WndProc(HWND hWnd, UINT uM
 			break;
 
 		case VK_F4:
-			/*if (m_setSelected->find(m_iSelected) != m_setSelected->end())
-				m_setSelected->erase(m_iSelected);
-			else
-				m_setSelected->insert(m_iSelected);*/
 			m_bPickedChanged = true;
 			break;
 
 		case VK_DELETE:									
 			m_setSelected->clear();
 			m_iSelected = 0;
+			m_bUpdateSelected = true;
 			break;
 
 		case VK_INSERT:									
 			m_bLogCycle = true;
+			break;
+
+		case VK_F5:
+			m_bCaptureScreen = true;
 			break;
 
 		case VK_F11:
