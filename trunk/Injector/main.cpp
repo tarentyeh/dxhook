@@ -30,24 +30,6 @@ int main()
 	STARTUPINFO si = {sizeof(STARTUPINFO)};
 	PROCESS_INFORMATION pi = {0};
 
-	//	Run the application with our dll
-#ifdef GAME1
-	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Tom Clancy's Splinter Cell Double Agent\\SCDALauncher.exe", NULL, 0, 0, TRUE,
-		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
-		L"D:\\Games\\Tom Clancy's Splinter Cell Double Agent",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\BASA\\Release\\dxhook.dll" , 0 );
-#endif
-#ifdef GAME2
-	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Heroes of Might and Magic V\\bin\\H5_Game.exe", NULL, 0, 0, TRUE,
-		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
-		L"D:\\Games\\Heroes of Might and Magic V\\bin",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\BASA\\Release\\dxhook.dll" , 0 );
-#endif
-
-#ifdef GAME3
-	BOOL bResult = DetourCreateProcessWithDll(L"D:\\Games\\Tomb Raider - Anniversary\\tra.exe", NULL, 0, 0, TRUE,
-		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
-		L"D:\\Games\\Tomb Raider - Anniversary",&si, &pi, L"D:\\Technion\\Semester 6\\Graphics Project\\BASA\\Release\\dxhook.dll" , 0 );
-#endif
-
 	ifstream file("Intercept.txt");
 	string exeFullpath;
 	string exePath;
