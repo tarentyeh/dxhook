@@ -80,9 +80,9 @@ HRESULT Direct3DDevice9WrapperExtended::EndScene()
 		Direct3DDevice9->GetBackBuffer(0,0,D3DBACKBUFFER_TYPE_MONO,&surf);
 		string filename;
 		if (m_bIsCaptureCycle)
-			filename = "D:\\Screen.bmp";
+			filename = "Screen.bmp";
 		else
-			filename = "D:\\Tracking.bmp";
+			filename = "Tracking.bmp";
 
 		DXLOGALWAYS("Taking pic.\n")
 
