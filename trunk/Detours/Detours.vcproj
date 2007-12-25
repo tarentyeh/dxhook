@@ -4,6 +4,7 @@
 	Version="8.00"
 	Name="Detours"
 	ProjectGUID="{E657DE41-1826-455C-98F1-17B2920A510D}"
+	RootNamespace="Detours"
 	>
 	<Platforms>
 		<Platform
@@ -131,6 +132,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+				CommandLine=""
 			/>
 		</Configuration>
 	</Configurations>

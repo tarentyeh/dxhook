@@ -14,7 +14,7 @@ using std::string;
 						log.open("D:\\dxlog.txt", ios::app);\
 						log << (text);\
 						log.close(); }
-#define DXLOGCYCLE(text)	if (LOGEVERYTHING || m_bIsLogCycle){ \
+#define DXLOGCYCLE(text)	if (LOGEVERYTHING && m_bIsLogCycle){ \
 								ofstream log;\
 								log.open("D:\\dxlog.txt", ios::app);\
 								log << (text);\
