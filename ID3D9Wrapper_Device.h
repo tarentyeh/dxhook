@@ -7,6 +7,13 @@ using std::ofstream;
 using std::ios;
 using std::string;
 
+//	----------------------------------------------------------------------
+//	----------------------------------------------------------------------
+//
+//								Logging macros
+//
+//	----------------------------------------------------------------------
+//	----------------------------------------------------------------------
 #define LOGEVERYTHINGALWAYS true
 #define LOGEVERYTHING false
 #define DXLOG(text)	if (LOGEVERYTHING){ \
@@ -25,15 +32,26 @@ using std::string;
 							log << (text);\
 							log.close(); }
 
+
+//-----------------------------------------------------------------------------------
+//	class:	Direct3DDevice9Wrapper
+//	--------------------------------------
+//	Description:	This class is derived from IDirect3DDevice9. It overrides all of
+//					it's methods as presented in d3d9.h to perform the interception.
+//-----------------------------------------------------------------------------------
 class Direct3DDevice9Wrapper : public IDirect3DDevice9
 {
 public:
 	Direct3DDevice9Wrapper(IDirect3DDevice9* pDirect3DDevice9, IDirect3D9* pDirect3D9, D3DPRESENT_PARAMETERS *pPresentationParameters);
 	virtual ~Direct3DDevice9Wrapper();
 
-	//---------------------------------------------------------------------------------------------
-	//	Got from d3d9.h - detoured functions signature
-	//---------------------------------------------------------------------------------------------
+	//	----------------------------------------------------------------------
+	//	----------------------------------------------------------------------
+	//
+	//					Class's methods, as given in d3d9.h
+	//
+	//	----------------------------------------------------------------------
+	//	----------------------------------------------------------------------
 	/*** IUnknown methods ***/
 	STDMETHOD(QueryInterface)(THIS_ REFIID riid, void** ppvObj);
 	STDMETHOD_(ULONG,AddRef)(THIS);

@@ -1,5 +1,11 @@
 #pragma once
 
+//-----------------------------------------------------------------------------------
+//	class:	IndexedPrimitive
+//	--------------------------------------
+//	Description:	A simple class used for storing the data regarding a single 
+//					indexed primitive.
+//-----------------------------------------------------------------------------------
 class IndexedPrimitive
 {
 public:

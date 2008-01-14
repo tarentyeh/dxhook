@@ -211,10 +211,6 @@
 				RelativePath=".\stdafx.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\Window.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Header Files"
@@ -239,10 +235,6 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\Window.h"
 				>
 			</File>
 		</Filter>

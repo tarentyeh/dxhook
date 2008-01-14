@@ -32,7 +32,7 @@ using std::wstring;
 
 //	-------------------------------	Forward Decelerations -------------------------
 LPSTR UnicodeToAnsi(LPCWSTR s);
-void StyleSettings(DWORD &dwExStyle, DWORD &dwStyle, int &nWidth, int& nHeight);
+void StyleSettings(DWORD &dwExStyle, DWORD &dwStyle);
 LRESULT CALLBACK Mine_WndProc( HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam );
 
 //	-------------------------------	Global Variables ------------------------------
@@ -54,7 +54,6 @@ extern "C"
 	//	DirectX detoured function
 	//--------------------------------------------------------------------------------------
 	DETOUR_TRAMPOLINE(IDirect3D9 *WINAPI Real_Direct3DCreate9(UINT SDKVersion), Direct3DCreate9);
-	DETOUR_TRAMPOLINE(	HRESULT	WINAPI Real_DirectInput8Create	(HINSTANCE hinst, DWORD dwVersion, REFIID riidltf, LPVOID *ppvOut, LPUNKNOWN punkOuter), DirectInput8Create);
 
 	//--------------------------------------------------------------------------------------
 	//	Various windows API detoured functions
@@ -63,18 +62,27 @@ extern "C"
 	DETOUR_TRAMPOLINE(	HWND	WINAPI Real_CreateWindowExW		(DWORD dwExStyle, LPCWSTR lpClassName, LPCWSTR lpWindowName, DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance, LPVOID lpParam), CreateWindowExW);
 	DETOUR_TRAMPOLINE(	ATOM	WINAPI Real_RegisterClassExW	(CONST WNDCLASSEXW* wndClass), RegisterClassExW);
 	DETOUR_TRAMPOLINE(	ATOM	WINAPI Real_RegisterClassExA	(CONST WNDCLASSEXA* wndClass), RegisterClassExA);
-	DETOUR_TRAMPOLINE(	LONG	WINAPI Real_SetWindowLongA		(HWND hWnd, int nIndex, LONG dwNewLong), SetWindowLongA);
-	DETOUR_TRAMPOLINE(	LONG	WINAPI Real_SetWindowLongW		(HWND hWnd, int nIndex, LONG dwNewLong), SetWindowLongW);
 
 #ifdef __cplusplus
 }
 #endif
 
 //	----------------------------------------------------------------------
-//	Our Trampoline callbacks
+//	----------------------------------------------------------------------
+//
+//							Our Intercepted Functions
+//
+//	----------------------------------------------------------------------
 //	----------------------------------------------------------------------
 
-//	***	Direct3DCreate9 ***********************************************************
+//------------------------------------------------------------------------------------------
+//	Function name:	Mine_Direct3DCreate9
+//	Description:	The trampoline for Direct3DCreate9 call. In it we create our own IDirect3D9 
+//					object, which inherits IDirect3D9. It enables us to manipulate calls used
+//					for this device as we are the middle man in this configuration.
+//	Parameters:		SDKVersion : The SDK version for us to use.
+//	Returns:		Our IDirect3D9 instance which encapsulate a real IDirect3D9
+//------------------------------------------------------------------------------------------
 IDirect3D9* WINAPI Mine_Direct3DCreate9(UINT SDKVersion)
 {
 	LOGFILE("Direct3DCreate9 called.\n");
@@ -82,15 +90,22 @@ IDirect3D9* WINAPI Mine_Direct3DCreate9(UINT SDKVersion)
 	IDirect3D9* Mine_Direct3D = new Direct3D9Wrapper(Direct3D);
 	return Mine_Direct3D;
 }
-//	*******************************************************************************
 
-//	*** CreateWindowExA ***********************************************************
+//------------------------------------------------------------------------------------------
+//	Function name:	Mine_CreateWindowExA
+//	Description:	The trampoline for CreateWindowExA call. We use this intercepted function
+//					to try and figure out the application main window handler for later keyboard
+//					input recieving. 
+//	Parameters:		Regular CreateWindowExA Parameters. We don't really need to know what they do
+//					as our only purpose is to send it to a CreateWindowExA call, initiated by us.
+//	Returns:		The new window handler
+//------------------------------------------------------------------------------------------
 HWND WINAPI Mine_CreateWindowExA(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpWindowName, DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance, LPVOID lpParam)
 {
 	if (nWidth > 280 && nWidth < 100000 && !GameHwnd){	//	This might be our game window
 
 		//	************************	Game window settings override		***********************
-		StyleSettings(dwExStyle, dwStyle, nWidth, nHeight);
+		StyleSettings(dwExStyle, dwStyle);
 
 		string winName(lpClassName);
 
@@ -104,15 +119,21 @@ HWND WINAPI Mine_CreateWindowExA(DWORD dwExStyle, LPCSTR lpClassName, LPCSTR lpW
 
 	return Real_CreateWindowExA(dwExStyle, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
 }
-//	*******************************************************************************
 
-//	*** CreateWindowExW ***********************************************************
+//------------------------------------------------------------------------------------------
+//	Function name:	Mine_CreateWindowExW
+//	Description:	The trampoline for CreateWindowExW call. Same as the function above, only this
+//					function deals with unicode strings (as the window name etc).
+//	Parameters:		Regular CreateWindowExW Parameters. We don't really need to know what they do
+//					as our only purpose is to send it to a CreateWindowExA call, initiated by us.
+//	Returns:		The new window handler
+//------------------------------------------------------------------------------------------
 HWND WINAPI Mine_CreateWindowExW(DWORD dwExStyle, LPCWSTR lpClassName, LPCWSTR lpWindowName, DWORD dwStyle, int x, int y, int nWidth, int nHeight, HWND hWndParent, HMENU hMenu, HINSTANCE hInstance, LPVOID lpParam)
 {
 	if (nWidth > 280 && nWidth < 100000 && !GameHwnd){	//	This might be our game window
 
 		//	************************	Game window settings override		***********************
-		StyleSettings(dwExStyle, dwStyle,nWidth, nHeight);
+		StyleSettings(dwExStyle, dwStyle);
 
 		string winName(UnicodeToAnsi(lpWindowName));
 
@@ -130,26 +151,14 @@ HWND WINAPI Mine_CreateWindowExW(DWORD dwExStyle, LPCWSTR lpClassName, LPCWSTR l
 
 	return Real_CreateWindowExW(dwExStyle, lpClassName, lpWindowName, dwStyle, x, y, nWidth, nHeight, hWndParent, hMenu, hInstance, lpParam);
 }
-//	*******************************************************************************
 
-// ** SetWindowLongA **************************************************************
-LONG WINAPI Mine_SetWindowLongA(HWND hWnd, int nIndex, LONG dwNewLong)
-{
-	LOGFILE("Entered SetWindowLongA.\n");
-	return Real_SetWindowLongA(hWnd, nIndex, dwNewLong);
-}
-//	*******************************************************************************
-
-// ** SetWindowLongW **************************************************************
-LONG WINAPI Mine_SetWindowLongW(HWND hWnd, int nIndex, LONG dwNewLong)
-{
-	LOGFILE("Entered SetWindowLongW.\n");
-	return Real_SetWindowLongW(hWnd, nIndex, dwNewLong);
-}
-//	*******************************************************************************
-
-//	RegisterClassExW
-//	----------------
+//------------------------------------------------------------------------------------------
+//	Function name:	Mine_RegisterClassExW
+//	Description:	The trampoline for RegisterClassExW call. Used for debug purposes, in order 
+//					to try and figure out how a certain application is executing.
+//	Parameters:		WNDCLASSEXW - a class containing fields for class registration
+//	Returns:		Operation is\not successful
+//------------------------------------------------------------------------------------------
 ATOM WINAPI Mine_RegisterClassExW(WNDCLASSEXW *wndClass)
 {
 	if (wndClass){
@@ -177,10 +186,14 @@ ATOM WINAPI Mine_RegisterClassExW(WNDCLASSEXW *wndClass)
 	
 	return Real_RegisterClassExW(wndClass);
 }
-//	*******************************************************************************
 
-//	RegisterClassExA
-//	----------------
+//------------------------------------------------------------------------------------------
+//	Function name:	Mine_RegisterClassExA
+//	Description:	The trampoline for RegisterClassExA call. Same as above. Difference with
+//					the strings.
+//	Parameters:		WNDCLASSEXW - a class containing fields for class registration
+//	Returns:		Operation is\not successful
+//------------------------------------------------------------------------------------------
 ATOM WINAPI Mine_RegisterClassExA (CONST WNDCLASSEXA* wndClass)
 {
 #ifdef LOG_REGISTERCLASS
@@ -189,39 +202,53 @@ ATOM WINAPI Mine_RegisterClassExA (CONST WNDCLASSEXA* wndClass)
 
 	return Real_RegisterClassExA(wndClass);
 }
-//	*******************************************************************************
-
-
-HRESULT WINAPI Mine_DirectInput8Create(HINSTANCE hinst, DWORD dwVersion, REFIID riidltf, LPVOID *ppvOut, LPUNKNOWN punkOuter)
-{
-	LOGFILE("DirectInput8Create.\n");
-	return Real_DirectInput8Create(hinst, dwVersion, riidltf, ppvOut, punkOuter);
-}
 
 //	----------------------------------------------------------------------
-//	Other hooking operations
 //	----------------------------------------------------------------------
+//
+//							The hooking operations
+//
+//	----------------------------------------------------------------------
+//	----------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------
+//	Function name:	HookAPI
+//	Description:	Hooking the real functions and our intercepted ones.
+//------------------------------------------------------------------------------------------
 void HookAPI()
 {
 	LOGFILE("----------------------------- Hooking API ---------------------\n");	
 	DetourFunctionWithTrampoline( (PBYTE)Real_Direct3DCreate9, (PBYTE)Mine_Direct3DCreate9);
 	DetourFunctionWithTrampoline( (PBYTE)Real_CreateWindowExA,	(PBYTE)Mine_CreateWindowExA );
 	DetourFunctionWithTrampoline( (PBYTE)Real_CreateWindowExW,	(PBYTE)Mine_CreateWindowExW );
-	DetourFunctionWithTrampoline( (PBYTE)Real_DirectInput8Create,	(PBYTE)Mine_DirectInput8Create);
 }
 
+//------------------------------------------------------------------------------------------
+//	Function name:	UnhookAPI
+//	Description:	Unhooking the real functions and our intercepted ones, upon exit.
+//------------------------------------------------------------------------------------------
 void UnhookAPI()
 {
 	LOGFILE("----------------------------- Unhooking API ---------------------\n");	
 	DetourRemove( (PBYTE)Real_Direct3DCreate9, (PBYTE)Mine_Direct3DCreate9);
 	DetourRemove( (PBYTE)Real_CreateWindowExA,	(PBYTE)Mine_CreateWindowExA );
 	DetourRemove( (PBYTE)Real_CreateWindowExW,	(PBYTE)Mine_CreateWindowExW );
-	DetourRemove( (PBYTE)Real_DirectInput8Create,	(PBYTE)Mine_DirectInput8Create);
 }
 
 //	----------------------------------------------------------------------
-//	Helper functions
 //	----------------------------------------------------------------------
+//
+//							Helper functions
+//
+//	----------------------------------------------------------------------
+//	----------------------------------------------------------------------
+
+//------------------------------------------------------------------------------------------
+//	Function name:	UnicodeToAnsi
+//	Description:	This function gets a string in LPCWSTR format and returns a LPSTR one.
+//	Parameters:		The string in LPCWSTR format.
+//	Returns:		The string in LPSTR format.
+//------------------------------------------------------------------------------------------
 LPSTR UnicodeToAnsi(LPCWSTR s)
 {
 	if (s==NULL) return NULL;
@@ -236,7 +263,13 @@ LPSTR UnicodeToAnsi(LPCWSTR s)
 	return psz;
 }
 
-void StyleSettings(DWORD &dwExStyle, DWORD &dwStyle, int &nWidth, int& nHeight)
+//------------------------------------------------------------------------------------------
+//	Function name:	StyleSettings
+//	Description:	Setting the style settings words for window creation.
+//	Parameters:		dwExStyle	- Reference for the style DWORD need to be set.
+//					dwStyle		- Reference for another style DWORD need to be set.
+//------------------------------------------------------------------------------------------
+void StyleSettings(DWORD &dwExStyle, DWORD &dwStyle)
 {
 	dwStyle = WS_VISIBLE | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_OVERLAPPEDWINDOW;
 	// ** Remove Extra Settings From The Style If They Exist
@@ -251,14 +284,14 @@ void StyleSettings(DWORD &dwExStyle, DWORD &dwStyle, int &nWidth, int& nHeight)
 
 	if( dwExStyle & WS_EX_STATICEDGE )
 		dwExStyle -= WS_EX_STATICEDGE;
-
-	//nWidth = 640;
-	//nHeight = 480;
 }
 
-//	----------------------------------------------------------------------
-//	Dll's main entry.
-//	----------------------------------------------------------------------
+//------------------------------------------------------------------------------------------
+//	Function name:	DllMain
+//	Description:	The dll's main entry point
+//	Parameters:		Parameters are used to determine the creation purpose.
+//	Returns:		TRUE.
+//------------------------------------------------------------------------------------------
 BOOL APIENTRY DllMain(HMODULE hModule, DWORD ul_reason_for_call, LPVOID lpReserved)
 {
 	if (ul_reason_for_call == DLL_PROCESS_ATTACH)

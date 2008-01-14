@@ -24,12 +24,11 @@ std::wstring s2ws(const std::string& s);
 
 int main()
 {
-	////////////////////////////////////
-	// Launch The Process
-	////////////////////////////////////
+
 	STARTUPINFO si = {sizeof(STARTUPINFO)};
 	PROCESS_INFORMATION pi = {0};
 
+	//	Reading parameters from the text file
 	ifstream file("Intercept.txt");
 	string exeFullpath;
 	string exePath;
@@ -40,10 +39,14 @@ int main()
 	file.getline(tmp, 256);
 	wstring gamePath(s2ws(tmp));
 
+	////////////////////////////////////
+	// Launch The Process
+	////////////////////////////////////
 	BOOL bResult = DetourCreateProcessWithDll(gameStr.c_str(), NULL, 0, 0, TRUE,
 		CREATE_DEFAULT_ERROR_MODE | CREATE_NEW_CONSOLE, NULL,
 		gamePath.c_str(),&si, &pi, L"dxhook.dll" , 0 );
 
+	//	Closing injector
 	file.close();
 
 	printf("Attached is %s.\n", (bResult)?"successful":"unsuccessful");
@@ -51,7 +54,7 @@ int main()
 		getch();
 }
 
-
+//	this function converts a string to a wstring (for windows API needs)
 std::wstring s2ws(const std::string& s)
 {
 	int len;
@@ -63,12 +66,3 @@ std::wstring s2ws(const std::string& s)
 	delete[] buf;
 	return r;
 }
-
-//std::string s;
-//
-//#ifdef UNICODE
-//std::wstring stemp = s2ws(s); // Temporary buffer is required
-//LPCWSTR result = stemp.c_str();
-//#else
-//LPCWSTR result = s.c_str();
-//#endif
