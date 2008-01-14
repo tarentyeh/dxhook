@@ -7,9 +7,14 @@ public:
 	Direct3D9Wrapper( LPDIRECT3D9 pDirect3D );
 	virtual ~Direct3D9Wrapper();
 
-	//---------------------------------------------------------------------------------------------
-	//	Got from d3d9.h - detoured functions signature
-	//---------------------------------------------------------------------------------------------
+	//	----------------------------------------------------------------------
+	//	----------------------------------------------------------------------
+	//
+	//		Got from d3d9.h - detoured functions signature
+	//
+	//	----------------------------------------------------------------------
+	//	----------------------------------------------------------------------
+
 	/*** IUnknown methods ***/
 	STDMETHOD(QueryInterface)(THIS_ REFIID riid, void** ppvObj);
 	STDMETHOD_(ULONG,AddRef)(THIS);
@@ -29,9 +34,22 @@ public:
 	STDMETHOD(CheckDeviceFormatConversion)(THIS_ UINT Adapter,D3DDEVTYPE DeviceType,D3DFORMAT SourceFormat,D3DFORMAT TargetFormat);
 	STDMETHOD(GetDeviceCaps)(THIS_ UINT Adapter,D3DDEVTYPE DeviceType,D3DCAPS9* pCaps);
 	STDMETHOD_(HMONITOR, GetAdapterMonitor)(THIS_ UINT Adapter);
-	STDMETHOD(CreateDevice)(THIS_ UINT Adapter,D3DDEVTYPE DeviceType,HWND hFocusWindow,DWORD BehaviorFlags,D3DPRESENT_PARAMETERS* pPresentationParameters,IDirect3DDevice9** ppReturnedDeviceInterface);
-	//---------------------------------------------------------------------------------------------
 
-	bool m_bIsLogCycle;
-	static IDirect3D9* Direct3D9;
+	//------------------------------------------------------------------------------------------
+	//	Function name:	CreateDevice
+	//	Description:	Here we create our own device - Direct3DDevice9WrapperExtended - which
+	//					will channel all the graphic command to use for our advantage.
+	//------------------------------------------------------------------------------------------
+	STDMETHOD(CreateDevice)(THIS_ UINT Adapter,D3DDEVTYPE DeviceType,HWND hFocusWindow,DWORD BehaviorFlags,D3DPRESENT_PARAMETERS* pPresentationParameters,IDirect3DDevice9** ppReturnedDeviceInterface);
+
+	
+	//	----------------------------------------------------------------------
+	//	----------------------------------------------------------------------
+	//
+	//									Members
+	//
+	//	----------------------------------------------------------------------
+	//	----------------------------------------------------------------------
+	bool m_bIsLogCycle;				//	Sync flag -	Should we log in the current cycle?
+	static IDirect3D9* Direct3D9;	//	The real IDirect3D9 object
 };

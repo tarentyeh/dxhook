@@ -48,21 +48,6 @@ Direct3DDevice9WrapperExtended::~Direct3DDevice9WrapperExtended()
 	delete m_setSelected;
 }
 
-HRESULT Direct3DDevice9WrapperExtended::Present(CONST RECT* pSourceRect,CONST RECT* pDestRect,HWND hDestWindowOverride,CONST RGNDATA* pDirtyRegion)
-{
-	DXLOGCYCLE("Direct3DDevice9WrapperExtended: Present\n");	
-	return Direct3DDevice9->Present(pSourceRect, pDestRect, hDestWindowOverride, pDirtyRegion);
-}
-
-HRESULT Direct3DDevice9WrapperExtended::SetRenderState(D3DRENDERSTATETYPE State,DWORD Value)
-{
-	//	Logging RenderState changes
-	char tmp[250];
-	sprintf(tmp, "Direct3DDevice9WrapperExtended: SetRenderState: State = %u Value = %x\n", State, Value);
-	DXLOGCYCLE(tmp);
-	return Direct3DDevice9->SetRenderState(State, Value);
-}
-
 HRESULT Direct3DDevice9WrapperExtended::BeginScene()
 {
 	//	A rendering cycle has begun
@@ -124,15 +109,16 @@ HRESULT Direct3DDevice9WrapperExtended::DrawIndexedPrimitive( D3DPRIMITIVETYPE P
 	
 	//	Draw the indexed primitive - if it's in the set or selected, use white pixel shader
 	if ((!m_bHideSelected && isCurrent) || inSet){
+		IDirect3DPixelShader9 *psTmp;
 		if (!m_bIsCaptureCycle){
-			Direct3DDevice9->GetPixelShader(&m_psTmp);
+			Direct3DDevice9->GetPixelShader(&psTmp);
 			Direct3DDevice9->SetPixelShader(m_psWhite);
 		}
 
 		HRESULT res = Direct3DDevice9->DrawIndexedPrimitive( PrimitiveType, BaseVertexIndex, MinVertexIndex, NumVertices, startIndex, primCount); 
 
 		if (!m_bIsCaptureCycle)
-			Direct3DDevice9->SetPixelShader(m_psTmp);
+			Direct3DDevice9->SetPixelShader(psTmp);
 
 		m_iCurrent++;
 		return res;
