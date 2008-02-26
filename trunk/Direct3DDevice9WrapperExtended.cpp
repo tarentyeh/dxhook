@@ -23,11 +23,11 @@ Direct3DDevice9Wrapper(pDirect3DDevice9, pDirect3D9, pPresentationParameters)
 	m_bIsTrackingCaptureCycle = m_bIsLogCycle = false;
 
 	if (!m_GameHwnd){
-		DXLOGALWAYS("No Game Handler :(\n");
+		DXLOG("No Game Handler :(\n");
 	}
 
 	if (!m_lpOldWndProc && m_GameHwnd){
-		DXLOGALWAYS("Hooked on WndProc.\n");
+		DXLOG("Hooked on WndProc.\n");
 
 		m_lpOldWndProc = (WNDPROC)(LONG_PTR)SetWindowLongPtr(m_GameHwnd, GWL_WNDPROC, (LONG)(LONG_PTR)Mine_WndProc);
 	}

@@ -25,7 +25,8 @@ using std::string;
 using std::wstring;
 
 //	-------------------------------	Macros ----------------------------------------
-#define LOGFILE(text)		{ofstream log;\
+#define LOGFILE(text)		if (false)\
+							{ofstream log;\
 							log.open("D:\\log.txt", ios::app);\
 							log << (text);\
 							log.close();}
