@@ -6,7 +6,6 @@ LRESULT CALLBACK Direct3DDevice9WrapperExtended::Mine_WndProc(HWND hWnd, UINT uM
 		switch (wParam)
 		{
 		case VK_F1:
-			DXLOGALWAYS("WireFrame");
 			m_dwWireframe = (m_dwWireframe == D3DFILL_SOLID)? D3DFILL_WIREFRAME : D3DFILL_SOLID;
 			if (Direct3DDevice9){
 				Direct3DDevice9->SetRenderState(D3DRS_FILLMODE, m_dwWireframe);
