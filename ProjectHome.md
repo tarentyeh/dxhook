@@ -1,0 +1,1 @@
+In this project we'll implement interception mechanism to directX usage, using microsoft detours library.
